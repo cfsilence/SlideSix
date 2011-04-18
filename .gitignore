@@ -1,4 +1,5 @@
 tests/
+.settings/
 .project
 build.properties
 readme.txt
