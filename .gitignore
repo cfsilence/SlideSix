@@ -1,0 +1,9 @@
+tests/
+.settings/
+.settings
+/.settings
+.project
+build.properties
+readme.txt
+settings.xml
+web.config
