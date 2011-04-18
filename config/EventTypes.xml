@@ -1,0 +1,69 @@
+<modelglue>
+	<event-types>
+		<!-- Sample Event Type:
+		You can use before, after or both.
+		<event-type name="templatedPage">
+			<before>
+				<results>
+					<result do="SomethingThatShouldRunBefore"/>
+				</results>
+			</before>
+			<after>
+				<results>
+					<result do="SomethingThatShouldRunAfter"/>
+				</results>
+			</after>		
+		</event-type>
+		-->
+		<event-type name="templatedPage">
+			<after>
+				<broadcasts>
+						<message name="needBeforeRequest" /> 
+				</broadcasts>
+				<views>
+					<include name="main" template="templates/main.cfm" />
+				</views>
+			</after>		
+		</event-type>
+		
+		<event-type name="loggedIn">
+			<before>
+				<broadcasts>
+						<message name="needIsLoggedIn" /> 
+				</broadcasts>
+				<results>
+					<result name="notLoggedIn" do="user.loginPage" redirect="true" />
+				</results>
+				<views>
+				</views>
+			</before>		
+		</event-type>
+		
+		<event-type name="notLoggedIn">
+			<before>
+				<broadcasts>
+						<message name="needIsNotLoggedIn" /> 
+				</broadcasts>
+				<results>
+					<result name="loggedIn" do="page.index" redirect="true" />
+				</results>
+				<views>
+				</views>
+			</before>		
+		</event-type>
+		
+		<event-type name="admin">
+			<before>
+				<broadcasts>
+						<message name="needIsAdmin" /> 
+				</broadcasts>
+				<results>
+					<result name="notAdmin" do="page.index" redirect="true" />
+				</results>
+				<views>
+				</views>
+			</before>		
+		</event-type>
+		
+	</event-types>
+</modelglue>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modelglue>
+	
+	<include template="/config/GenericController.xml" />
+	<include template="/config/PageController.xml" />
+	<include template="/config/UserController.xml" />
+	<include template="/config/AdminController.xml" />
+	
+	<include template="/config/EventTypes.xml" />
+	<include template="/config/UserEvents.xml" />
+	<include template="/config/PageEvents.xml" />
+	<include template="/config/AdminEvents.xml" />
+	
+</modelglue>
+

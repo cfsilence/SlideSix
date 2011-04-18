@@ -1,0 +1,7 @@
+<modelglue>
+	<controllers>
+			<controller id="GenericController" type="controller.GenericController">
+				<message-listener message="needBeforeRequest" function="beforeRequest" />	
+			</controller>
+	</controllers>
+</modelglue>

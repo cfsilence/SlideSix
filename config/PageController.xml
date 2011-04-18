@@ -1,0 +1,16 @@
+<modelglue>
+	<controllers>
+			<controller id="PageController" type="controller.PageController">
+				<message-listener message="onRequestStart" function="onRequestStart" />	
+				<message-listener message="needHomePage" function="getHomePage" />	
+				<message-listener message="needSlideManager" function="getSlideManagerPage" />	
+				<message-listener message="needDedicatedRoom" function="getDedicatedRoom" />	
+				<message-listener message="needPresenterUpdateXML" function="getPresenterUpdateXML" />	
+				<message-listener message="needSlideshowView" function="getSlideshowView" />	
+				<message-listener message="needSlideshowList" function="getSlideshowsList" />	
+				<message-listener message="needUserView" function="getUserView" />	
+				<message-listener message="needGroupView" function="getGroupView" />	
+				<message-listener message="needPrivateSlideshowAccess" function="getPrivateSlideshowAccess" />	
+			</controller>
+	</controllers>
+</modelglue>

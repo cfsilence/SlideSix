@@ -1,0 +1,397 @@
+<beans>
+	
+<!-- This is your Model-Glue configuration -->
+<bean id="modelglue.modelGlueConfiguration" class="ModelGlue.gesture.configuration.ModelGlueConfiguration">
+
+	<!-- Be sure to change these to false when you go to production! -->
+	<property name="reload"><value>true</value></property>
+	<property name="debug"><value>true</value></property>
+	
+	<!-- Name of the URL variable that states which event-handler to run -->
+	<property name="eventValue"><value>event</value></property>
+	<!-- Default event-handler -->
+	<property name="defaultEvent"><value>page.index</value></property>
+	<!-- Execute this event when the requested event is missing. Won't work if generationEnabled=true and in development mode! -->
+	<property name="missingEvent"><value>page.missing</value></property>
+	<!-- Execute this event when an error occurs. -->
+	<property name="defaultExceptionHandler"><value>page.error</value></property>
+	
+	<!-- Controls reloading -->
+	<property name="reloadPassword"><value>true</value></property>
+	<property name="reloadKey"><value>init</value></property>
+
+	<!-- Where to find necessary files -->
+	<property name="configurationPath"><value>config/ModelGlue.xml</value></property>
+	<property name="applicationMapping"><value></value></property>
+	<property name="viewMappings"><value>/views</value></property>
+	<property name="helperMappings"><value>/helpers</value></property>
+	
+	<!-- Generate unknown events when in development mode?  (reload=false) -->
+	<property name="generationEnabled"><value>false</value></property>
+	
+	<!-- Set the default cache timeout in seconds -->
+	<property name="defaultCacheTimeout"><value>60</value></property>	
+	
+	<!-- Scaffolding config -->
+	<!-- Turning this off will disable any scaffold generation. Turning this on requires the reload setting above to also be on.-->	
+	<property name="rescaffold"><value>false</value></property>
+	<!-- Where do you want generated views to be saved to? -->
+	<property name="generatedViewMapping"><value>views</value></property>
+	<!--This directory structure should already exists. ModelGlue will create the Scaffolds.xml file and overwrite as needed.-->
+	<property name="scaffoldPath"><value>config/scaffolds/Scaffolds.xml</value></property>
+	<!-- What scaffold generation patterns should ModelGlue use if you do not specify in the <scaffold type=""> attribute? .-->
+	<property name="defaultScaffolds"><value>list,edit,view,commit,delete</value></property>
+	
+	<!-- See documentation or ModelGlueConfiguration.cfc for additional options. -->
+</bean>
+	
+<!-- 
+	If you need your own configuration values (datasource names, etc), put them here.
+	
+	See modelgluesamples/simpleconfiguration/controller/Controller for an example of how to get to the values.
+	
+	Advanced users who are used to ColdSpring will probably delete this bean in favor of their own approach.
+-->
+<bean id="modelglue.applicationConfiguration" class="ModelGlue.Bean.CommonBeans.SimpleConfig">
+	<property name="config">
+		<map>
+			<entry key="dsn"><value>${dsn}</value></entry>
+		</map>
+	</property>
+</bean>
+
+<!-- flex config is a bit redundant, but I want to keep some of the general AppConfig settings from going down the wire to flex since AppConfig may contain stuff like passwords, etc -->
+
+<bean id="FlexConfig" class="ModelGlue.Bean.CommonBeans.SimpleConfig">
+	<property name="config">
+		<map>
+			<entry key="storeBaseURL">
+	            <value>${storeBaseURL}</value>
+	        </entry>
+		</map>
+	</property>
+</bean>
+
+<bean id="AppConfig" class="ModelGlue.Bean.CommonBeans.SimpleConfig">
+	<property name="config">
+		<map>
+			<entry key="storageType">
+	            <value>${storageType}</value>
+	        </entry>
+	        <entry key="storageRootDir">
+	            <value>${storageRootDir}</value>
+	        </entry>
+	        <entry key="storeBaseURL">
+	            <value>${storeBaseURL}</value>
+	        </entry>
+	        <entry key="s3ID">
+	            <value>${s3ID}</value>
+	        </entry>
+	        <entry key="appFriendlyName">
+	            <value>${appFriendlyName}</value>
+	        </entry>
+	        <entry key="physicalTempRoot">
+	            <value>${physicalTempRoot}</value>
+	        </entry>
+	        <entry key="virtualTempRoot">
+	            <value>${virtualTempRoot}</value>
+	        </entry>
+	        <entry key="slideShowThumbWidth">
+	            <value>${slideShowThumbWidth}</value>
+	        </entry>
+	        <entry key="validPresentationUploadExtensions">
+	            <value>${validPresentationUploadExtensions}</value>
+	        </entry>
+	        <entry key="ooExtensions">
+	            <value>${ooExtensions}</value>
+	        </entry>
+	        <entry key="pdfExtension">
+	            <value>${pdfExtension}</value>
+	        </entry>
+	        <entry key="validAttachmentUploadExtensions">
+	            <value>${validAttachmentUploadExtensions}</value>
+	        </entry>
+	        <!-- related to JODConvert stuff -->
+	        <entry key="ooWidth">
+	            <value>${ooWidth}</value>
+	        </entry>
+	        <entry key="ooCompression">
+	            <value>${ooCompression}</value>
+	        </entry>
+	        <entry key="ooExportNotes">
+	            <value>${ooExportNotes}</value>
+	        </entry>
+	        <entry key="ooExportFilter">
+	            <value>${ooExportFilter}</value>
+	        </entry>
+			<entry key="ooJpgExportFilter">
+	            <value>${ooJpgExportFilter}</value>
+	        </entry>
+			<entry key="isSearchEnabled">
+	            <value>${isSearchEnabled}</value>
+	        </entry>
+			<entry key="searchCollectionName">
+	            <value>${searchCollectionName}</value>
+	        </entry>
+	        <entry key="managementConsoleGatewayName">
+	            <value>${managementConsoleGatewayName}</value>
+	        </entry>
+	        <entry key="decicatedRoomGatewayName">
+	            <value>${decicatedRoomGatewayName}</value>
+	        </entry>
+	        <entry key="pathToOpenOffice">
+	            <value>${pathToOpenOffice}</value>
+	        </entry>
+	        <entry key="pathToMediaServerRecordings">
+	            <value>${pathToMediaServerRecordings}</value>
+	        </entry>
+	        <entry key="logFileDeleteErrors">
+	            <value>${logFileDeleteErrors}</value>
+	        </entry>
+	        <entry key="fileDeleteErrorsLogName">
+	            <value>${fileDeleteErrorsLogName}</value>
+	        </entry>
+	        <entry key="presenterCurrentVersion">
+	            <value>${presenterCurrentVersion}</value>
+	        </entry>
+	        <entry key="presenterDownloadURL">
+	            <value>${presenterDownloadURL}</value>
+	        </entry>
+	        <entry key="logSlideshowImportErrors">
+	            <value>${logSlideshowImportErrors}</value>
+	        </entry>
+	        <entry key="slideshowImportErrorsLogName">
+	            <value>${slideshowImportErrorsLogName}</value>
+	        </entry>
+		</map>
+	</property>
+</bean>
+  
+<!-- Put definitions for your own beans and services here -->
+
+<bean id="JavaLoaderService" class="services.javaloader.JavaLoaderService" />
+
+<bean id="ooConvert" class="services.convert.oo.Convert">
+	<constructor-arg name="loaderService">
+		<ref bean="JavaLoaderService" />
+	</constructor-arg>
+	<property name="AppConfig">
+		<ref bean="AppConfig"></ref>
+	</property>
+	<property name="Utils">
+		<ref bean="Utils"></ref>
+	</property>
+</bean>
+
+<bean id="pdfConvert" class="services.convert.pdf.Convert">
+	<property name="AppConfig">
+		<ref bean="AppConfig"></ref>
+	</property>
+	<property name="Utils">
+		<ref bean="Utils"></ref>
+	</property>
+</bean>
+
+<bean id="FileService" class="services.file.FileService">
+	<property name="AppConfig">
+		<ref bean="AppConfig"></ref>
+	</property>
+</bean>
+
+<bean id="SearchService" class="services.search.SearchService">
+	<property name="AppConfig">
+		<ref bean="AppConfig"></ref>
+	</property>
+	<property name="Utils">
+		<ref bean="Utils"></ref>
+	</property>
+	<property name="SlideshowService">
+		<ref bean="SlideshowService" />
+	</property>
+</bean>
+
+
+<bean id="GenericDAO" class="services.GenericDAO">
+	<!-- 
+	<constructor-arg name="">
+		<ref bean="" />
+	</constructor-arg>
+	-->
+</bean>
+
+<!-- service definitions -->
+
+<bean id="TwitterService" class="services.twitter.TwitterService" />
+
+<bean id="Utils" class="services.utils.Utils" />
+
+<bean id="GroupService" class="services.groups.GroupService">
+	<property name="GenericDAO">
+		<ref bean="GenericDAO" />
+	</property>
+	<property name="Utils">
+		<ref bean="Utils" />
+	</property>
+	<property name="UserService">
+		<ref bean="UserService" />
+	</property>
+	<property name="EmailService">
+		<ref bean="EmailService" />
+	</property>
+	<property name="FileService">
+		<ref bean="FileService" />
+	</property>
+	<property name="AppConfig">
+		<ref bean="AppConfig" />
+	</property>
+</bean>	
+
+<bean id="UserService" class="services.users.UserService">
+	<property name="GenericDAO">
+		<ref bean="GenericDAO" />
+	</property>
+	<property name="EmailService">
+		<ref bean="EmailService" />
+	</property>
+	<property name="AppConfig">
+		<ref bean="AppConfig" />
+	</property>
+	<property name="Utils">
+		<ref bean="Utils" />
+	</property>
+	<property name="FileService">
+		<ref bean="FileService" />
+	</property>
+	<property name="SlideshowService">
+		<ref bean="SlideshowService" />
+	</property>
+</bean>
+
+<bean id="SlideshowService" class="services.slideshows.SlideshowService">
+	<property name="GenericDAO">
+		<ref bean="GenericDAO" />
+	</property>
+	<property name="EmailService">
+		<ref bean="EmailService" />
+	</property>
+	<property name="AppConfig">
+		<ref bean="AppConfig" />
+	</property>
+	<property name="Utils">
+		<ref bean="Utils" />
+	</property>
+	<property name="ooConvert">
+		<ref bean="ooConvert" />
+	</property>
+	<property name="pdfConvert">
+		<ref bean="pdfConvert" />
+	</property>
+	<property name="UserService">
+		<ref bean="UserService" />
+	</property>
+	<property name="GroupService">
+		<ref bean="GroupService" />
+	</property>
+	<property name="SearchService">
+		<ref bean="SearchService" />
+	</property>
+	<property name="FileService">
+		<ref bean="FileService" />
+	</property>
+</bean>
+
+<bean id="Hyrule" class="hyrule.Validator">
+	<!-- 
+	<property name="">
+		<ref bean="" />
+	</property>
+	-->
+</bean>
+	
+<!-- E-Mail Configuration -->
+<bean id="EmailConfiguration" class="ModelGlue.Bean.CommonBeans.SimpleConfig" singleton="true">
+	<property name="Config">
+		<map>
+			<!-- 
+				If set to "true", no e-mail goes to its actual "to" value, but to the list of 
+				addresses in the developmentEmailAddress value 
+			-->
+			<entry key="developmentMode">
+				<value>${emailDevelopmentModeEnabled}</value>
+			</entry>
+			<!-- 
+				When in development mode, who should e-mails go to?
+			-->
+			<entry key="developmentEmailAddress">
+				<value>${developmentEmailAddress}</value>
+			</entry>
+			<!-- A default sender for all e-mails -->
+			<entry key="defaultFrom">
+				<value>${adminEmail}</value><!--"SlideSix" &lt;admin@slidesix.com&gt;-->
+			</entry>
+			<!-- Default type for e-mail:  text or html. -->
+			<entry key="defaultType">
+				<value>${emailType}</value>
+			</entry>
+			<!-- Server to use.  This MUST be filled out, ColdFusion's default will not be used. -->
+			<entry key="server">
+				<value>${mailServer}</value>
+			</entry>
+			<entry key="port">
+				<value>${mailPort}</value>
+			</entry>
+			<entry key="username">
+				<value>${mailUsername}</value>
+			</entry>
+			<entry key="password">
+				<value>${mailPassword}</value>
+			</entry>
+			<entry key="useTLS">
+				<value>${useTLS}</value>
+			</entry>
+			<entry key="useSSL">
+				<value>${useSSL}</value>
+			</entry>
+		</map>
+	</property>
+</bean>
+
+<bean id="EmailService" class="services.email.EmailService">
+	<constructor-arg name="EmailConfiguration">
+		<ref bean="EmailConfiguration" />
+	</constructor-arg>
+</bean>
+<!-- ORM Framework Configuration -->
+		
+<!--
+		To connect Model-Glue to either the
+		Transfer or Reactor ORM frameworks
+		uncomment and configure the appropriate block below
+-->
+	
+<!-- 
+	Transfer:
+
+	<alias alias="ormAdapter" name="ormAdapter.Transfer" />
+	<alias alias="ormService" name="ormService.Transfer" />
+	<bean id="transferConfiguration" class="transfer.com.config.Configuration">
+		<constructor-arg name="datasourcePath"><value>/slidesix_commercial/config/transfer/Datasource.xml</value></constructor-arg>
+		<constructor-arg name="configPath"><value>/slidesix_commercial/config/transfer/Transfer.xml</value></constructor-arg>
+		<constructor-arg name="definitionPath"><value>/slidesix_commercial/model/data/transfer</value></constructor-arg>
+	</bean>
+  
+	Reactor:
+		
+	<alias alias="ormAdapter" name="ormAdapter.Reactor" />
+	<alias alias="ormService" name="ormService.Reactor" />
+	<bean id="reactorConfiguration" class="reactor.config.config">
+		<constructor-arg name="pathToConfigXml"><value>/slidesix_commercial/config/reactor/Reactor.xml</value></constructor-arg>
+		<property name="project"><value>test</value></property>
+		<property name="dsn"><value>test</value></property>
+		<property name="type"><value>mysql</value></property>
+		<property name="mapping"><value>/slidesix_commercial/model/data/reactor</value></property>
+		<property name="mode"><value>development</value></property>
+	</bean>
+-->	
+
+</beans>

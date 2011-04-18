@@ -1,0 +1,95 @@
+<modelglue>
+	<event-handlers>
+		<event-handler name="user.register" type="templatedPage,notLoggedIn">
+			<broadcasts>
+				<message name="needRegisterPage" />
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/register.cfm" />
+			</views>
+		</event-handler>
+			
+		<event-handler name="user.new" type="templatedPage">
+			<broadcasts>
+				<message name="handleRegisterPage" />
+			</broadcasts>
+			<results>
+				<result name="success"  do="page.index" redirect="true" />
+				<result name="failure" do="user.register" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+			
+		<event-handler name="user.loginPage" type="templatedPage,notLoggedIn">
+			<broadcasts>
+				<message name="needLoginPage" />
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/login.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="user.login">
+			<broadcasts>
+				<message name="needLogin" />
+			</broadcasts>
+			<results>
+				<result name="success"  do="page.index" redirect="true" />
+				<result name="failure" do="user.loginPage" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="user.logout">
+			<broadcasts>
+				<message name="needLogout" />
+			</broadcasts>
+			<results>
+				<result do="page.index" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+			
+		<event-handler name="user.verify">
+			<broadcasts>
+				<message name="needVerifyUser" />
+			</broadcasts>
+			<results>
+				<result do="page.index" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="user.sendVerifyEmail">
+			<broadcasts>
+				<message name="needVerifyEmail" />
+			</broadcasts>
+			<results>
+				<result do="page.index" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+			
+		<event-handler name="user.resetPassword">
+			<broadcasts>
+				<message name="needPasswordReset" />
+			</broadcasts>
+			<results>
+				<result name="success"  do="page.index" redirect="true" />
+				<result name="failure" do="user.loginPage" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+			
+	</event-handlers>
+</modelglue>

@@ -1,0 +1,6 @@
+tests/
+.project
+build.properties
+readme.txt
+settings.xml
+web.config

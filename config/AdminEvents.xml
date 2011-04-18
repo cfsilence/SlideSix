@@ -1,0 +1,142 @@
+<modelglue>
+	<event-handlers>
+		<event-handler name="admin.users" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needAdminUsers" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/users.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editUser" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditUser" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/user.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editUserAction" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditUserAction" />				
+			</broadcasts>
+			<results>
+				<result name="failure" do="admin.editUser" />
+				<result name="success" do="admin.users" redirect="true" />
+			</results>
+			<views>
+				<include name="body" template="pages/admin/user.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.deleteUser" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needDeleteUser" />				
+			</broadcasts>
+			<results>
+				<result name="deleted" do="admin.users" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.slideshows" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needAdminSlideshows" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/slideshows.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editSlideshow" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditSlideshow" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/slideshow.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editSlideshowAction" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditSlideshowAction" />				
+			</broadcasts>
+			<results>
+				<result name="failure" do="admin.editSlideshow" />
+				<result name="success" do="admin.slideshows" redirect="true" />
+			</results>
+			<views>
+				<include name="body" template="pages/admin/slideshow.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.deleteSlideshow" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needDeleteSlideshow" />				
+			</broadcasts>
+			<results>
+				<result name="deleted" do="admin.slideshows" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.groups" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needAdminGroups" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/groups.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editGroup" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditGroup" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/group.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editgroupAction" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditGroupAction" />				
+			</broadcasts>
+			<results>
+				<result name="failure" do="admin.editGroup" />
+				<result name="success" do="admin.groups" redirect="true" />
+			</results>
+			<views>
+				<include name="body" template="pages/admin/group.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.deleteGroup" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needDeleteGroup" />				
+			</broadcasts>
+			<results>
+				<result name="deleted" do="admin.groups" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+	</event-handlers>
+</modelglue>

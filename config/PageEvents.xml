@@ -1,0 +1,139 @@
+<modelglue>
+	<event-handlers>
+		
+		<!-- 
+		Sample Event Handler:
+		<event-handler name="eventname">
+			<broadcasts>
+				<message name="message" />
+			</broadcasts>
+			<results>
+				<result name="resultName" do="otherEvent" />
+			</results>
+			<views>
+				<include name="body" template="content.cfm" />
+			</views>
+		</event-handler> 
+		-->
+		
+		<!-- A homepage for your application. -->
+		<event-handler name="page.index" type="templatedPage">
+			<broadcasts>
+				<message name="needHomePage" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/index.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="slideshow.view" type="templatedPage">
+			<broadcasts>
+				<message name="needSlideshowView" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/slideshow.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="slideshows.list" type="templatedPage">
+			<broadcasts>
+				<message name="needSlideshowList" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/listSlideshows.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="slideshow.access" type="">
+			<broadcasts>
+				<message name="needPrivateSlideshowAccess" />				
+			</broadcasts>
+			<results>
+				<result do="slideshow.view" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="user.view" type="templatedPage">
+			<broadcasts>
+				<message name="needUserView" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/user.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="group.view" type="templatedPage">
+			<broadcasts>
+				<message name="needGroupView" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/group.cfm" />
+			</views>
+		</event-handler>
+
+		<event-handler name="presenter.xml">
+			<broadcasts>
+				<message name="needPresenterUpdateXML" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/presenterUpdateXML.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="slidemanager" type="loggedIn">
+			<broadcasts>
+				<message name="needSlideManager" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/slideManager.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="dedicatedRoom" type="">
+			<broadcasts>
+				<message name="needDedicatedRoom" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/dedicatedRoom.cfm" />
+			</views>
+		</event-handler>
+		
+		<!-- An error event to show when an error occurs, much like <cferror>. -->
+		<event-handler name="page.error" type="templatedPage">
+			<broadcasts />
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/exception.cfm" />
+			</views>
+		</event-handler>
+		<!-- A "404" event to show when the requested event isn't defined. -->
+		<event-handler name="page.missing" type="templatedPage">
+			<broadcasts />
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/missingEvent.cfm" />
+			</views>
+		</event-handler>
+	</event-handlers>
+	
+</modelglue>

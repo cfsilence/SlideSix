@@ -1,0 +1,22 @@
+<modelglue>
+	<controllers>
+			<controller id="AdminController" type="controller.AdminController">
+					
+				
+				<message-listener message="needAdminUsers" function="getAdminUsers" />	
+				<message-listener message="needEditUser" function="getEditUser" />	
+				<message-listener message="needEditUserAction" function="getEditUserAction" />	
+				<message-listener message="needDeleteUser" function="getDeleteUser" />
+				
+				<message-listener message="needAdminSlideshows" function="getAdminSlideshows" />
+				<message-listener message="needEditSlideshow" function="getEditSlideshow" />	
+				<message-listener message="needEditSlideshowAction" function="getEditSlideshowAction" />	
+				<message-listener message="needDeleteSlideshow" function="getDeleteSlideshow" />	
+				
+				<message-listener message="needAdminGroups" function="getAdminGroups" />
+				<message-listener message="needEditGroup" function="getEditGroup" />	
+				<message-listener message="needEditGroupAction" function="getEditGroupAction" />	
+				<message-listener message="needDeleteGroup" function="getDeleteGroup" />	
+			</controller>
+	</controllers>
+</modelglue>

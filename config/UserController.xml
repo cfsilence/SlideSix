@@ -1,0 +1,18 @@
+<modelglue>
+	<controllers>
+			<controller id="UserController" type="controller.UserController">
+				<message-listener message="onRequestStart" function="onRequestStart" />	
+				<message-listener message="needRegisterPage" function="getRegisterPage" />	
+				<message-listener message="handleRegisterPage" function="handleRegisterPage" />	
+				<message-listener message="needVerifyUser" function="getVerifyUser" />	
+				<message-listener message="needVerifyEmail" function="sendVerifyEmail" />	
+				<message-listener message="needPasswordReset" function="getResetPassword" />	
+				<message-listener message="needLoginPage" function="getLoginPage" />	
+				<message-listener message="needLogin" function="handleLogin" />	
+				<message-listener message="needLogout" function="handleLogout" />	
+				<message-listener message="needIsLoggedIn" function="getIsLoggedIn" />	
+				<message-listener message="needIsNotLoggedIn" function="getIsNotLoggedIn" />	
+				<message-listener message="needIsAdmin" function="getIsAdmin" />	
+			</controller>
+	</controllers>
+</modelglue>
