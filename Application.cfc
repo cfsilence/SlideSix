@@ -1,4 +1,7 @@
 ﻿component output="false"{
+	//s3 settings (keeps them out of Git) remove this include if you don't need it
+	include 'config/s3.cfm';
+	
 	this.name = 'slidesix_os';
 	//orm settings
 	this.ormenabled = true;
@@ -15,8 +18,8 @@
 	this.clientStorage = 'cookie';
 	
 	//s3 settings
-	this.s3.accessKeyid = '';
-    this.s3.awsSecretKey = '';
+	this.s3.accessKeyid = variables.s3Access;
+    this.s3.awsSecretKey = variables.s3Secret;
      
 	public void function onApplicationStart(){
 		
