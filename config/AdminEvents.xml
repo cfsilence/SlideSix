@@ -1,5 +1,17 @@
 <modelglue>
 	<event-handlers>
+	
+		<event-handler name="admin.main" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needAdminMain" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/main.cfm" />
+			</views>
+		</event-handler>
+		
 		<event-handler name="admin.users" type="templatedPage,loggedIn,admin">
 			<broadcasts>
 				<message name="needAdminUsers" />				

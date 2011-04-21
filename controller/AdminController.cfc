@@ -17,6 +17,10 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 	public function onRequestStart(Any event){
 	}
 
+	public function getAdminMain(Any event){
+			
+	}
+	
 	public function getAdminUsers(Any event){
 		var recs = 10;
 		var pagination = createObject('component', 'services.utils.Pagination').init();

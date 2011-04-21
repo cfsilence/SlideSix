@@ -29,6 +29,7 @@
 		<cfargument name="pageSize" required="false" default="10" />
 		<cfset var ret = {} />
 		<cfset ret.meta = {} />
+		<cfset ret.slideshows = [] />
 		<cfset var collection = getAppConfig().getConfigSetting('searchCollectionName') />
 		<cfset var isSearchEnabled = getAppConfig().getConfigSetting('isSearchEnabled') />
 		<cfset var results = queryNew("") />
@@ -37,13 +38,16 @@
 		<cfset var params = {} />
 		<cfset var orderBy = ' ORDER BY createdOn desc' />
 		<cfset var start = fix(val(REReplace(arguments.sRow,"[^/.0123456789-]","","all"))) />
+		<cfset var keys = "" />
+		
 		<cfset start = start eq 0 ? start : start - 1 />
 		
 		<cfif isSearchEnabled and len(trim(arguments.criteria))>
 			<cfsearch collection="#collection#" name="results" criteria="#arguments.criteria#" suggestions="always" />
 			<cfset ret.meta.totalRecords = results.recordCount />
 			<cfset whereClause = 'ID IN (:idList)' />
-			<cfset params = {idList=listToArray(valueList(results.key))} />
+			<cfset keys = valueList(results.key) />
+			<cfset params = {idList=listToArray(keys)} />
 		</cfif>
 		
 		<cfif not len(trim(arguments.criteria))>
@@ -52,7 +56,12 @@
 		
 		<cfset var maxRecords = len(trim(arguments.pageSize)) && isNumeric(val(arguments.pageSize)) ? arguments.pageSize : results.recordCount />
 		
-		<cfset ret.slideshows = getSlideshowService().listSlideshows(whereClause & orderBy, params, {maxresults=maxRecords, offset=start}) />
+		<cfif len(trim(keys))>
+			<cfset ret.slideshows = getSlideshowService().listSlideshows(whereClause & orderBy, params, {maxresults=maxRecords, offset=start}) />
+			<cfif !arrayLen(ret.slideshows)><!--- if somehow a record got 'stranded' in Solr --->
+				<cfset ret.meta.totalRecords = 0 />
+			</cfif>
+		</cfif>
 		
 		<cfreturn ret />
 	</cffunction>

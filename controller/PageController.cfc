@@ -28,6 +28,37 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 		arguments.event.setValue('config', beans.AppConfig);
 	}
 	
+	public function getSlideshowsSearch(Any event){
+		var q = htmlEditFormat(event.getValue('q',''));
+		if(!len(trim(q))){
+			arguments.event.setValue('msg', 'You didn''t specify a search term.');
+			arguments.event.forward('page.index', 'msg');
+		}
+		var max = 10;
+		
+		var start = beans.Utils.cleanVarForPaging(arguments.event.getValue('s',1));
+		var search = beans.SearchService.search(q,start);
+		var count = search.meta.totalRecords;
+		var slideshows = search.slideshows;
+
+		if(!count){
+			arguments.event.setValue('msg', 'No presentations found matching the search term ' & '"' & q & '".');
+			arguments.event.forward('page.index', 'msg');
+		}
+		if(start > count){
+			arguments.event.setValue('s',1);
+			arguments.event.forward('slideshows.list','s');
+		}
+
+		arguments.event.setValue('hasNext', count >= start + arrayLen(slideshows));
+		arguments.event.setValue('nextStart', start + arrayLen(slideshows));
+		arguments.event.setValue('hasPrev', start > 1);
+		arguments.event.setValue('prevStart', start - max < 0 ? 1 : start - max);
+		arguments.event.setValue('slideshows', slideshows);
+		arguments.event.setValue('countSlideshows', count);
+		arguments.event.setValue('config', beans.AppConfig);
+	}
+	
 	public function getSlideshowsList(Any event){
 		var whereClause = 'lastBuildDate is not null and password is null ORDER BY createdOn desc';
 		var count = beans.Slideshowservice.countSlideshows(whereClause);
@@ -52,6 +83,60 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 		arguments.event.setValue('prevStart', start - max < 0 ? 1 : start - max);
 		arguments.event.setValue('slideshows', slideshows);
 		arguments.event.setValue('countSlideshows', count);
+		arguments.event.setValue('config', beans.AppConfig);
+	}
+	
+	public function getUsersList(Any event){
+		var whereClause = '1=1 ORDER BY createdOn desc';
+		var count = beans.UserService.countUsers(whereClause);
+		var max = 10;
+		
+		var start = beans.Utils.cleanVarForPaging(arguments.event.getValue('s',1));
+		
+		if(!count){
+			arguments.event.setValue('msg', 'No Users Found.');
+			arguments.event.forward('page.index', 'msg');
+		}
+		if(start > count){
+			arguments.event.setValue('s',1);
+			arguments.event.forward('users.list','s');
+		}
+
+		var users = beans.UserService.listUsers(whereClause, [], {maxresults=max, offset=start});
+		
+		arguments.event.setValue('hasNext', count >= start + arrayLen(users));
+		arguments.event.setValue('nextStart', start + arrayLen(users));
+		arguments.event.setValue('hasPrev', start > 1);
+		arguments.event.setValue('prevStart', start - max < 0 ? 1 : start - max);
+		arguments.event.setValue('users', users);
+		arguments.event.setValue('countUsers', count);
+		arguments.event.setValue('config', beans.AppConfig);
+	}
+	
+	public function getGroupsList(Any event){
+		var whereClause = '1=1 ORDER BY createdOn desc';
+		var count = beans.GroupService.countGroups(whereClause);
+		var max = 10;
+		
+		var start = beans.Utils.cleanVarForPaging(arguments.event.getValue('s',1));
+		
+		if(!count){
+			arguments.event.setValue('msg', 'No Groups Found.');
+			arguments.event.forward('page.index', 'msg');
+		}
+		if(start > count){
+			arguments.event.setValue('s',1);
+			arguments.event.forward('groups.list','s');
+		}
+
+		var groups = beans.GroupService.listGroups(whereClause, [], {maxresults=max, offset=start});
+		
+		arguments.event.setValue('hasNext', count >= start + arrayLen(groups));
+		arguments.event.setValue('nextStart', start + arrayLen(groups));
+		arguments.event.setValue('hasPrev', start > 1);
+		arguments.event.setValue('prevStart', start - max < 0 ? 1 : start - max);
+		arguments.event.setValue('groups', groups);
+		arguments.event.setValue('countGroups', count);
 		arguments.event.setValue('config', beans.AppConfig);
 	}
 	

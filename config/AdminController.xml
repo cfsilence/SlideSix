@@ -1,8 +1,8 @@
 <modelglue>
 	<controllers>
 			<controller id="AdminController" type="controller.AdminController">
-					
-				
+				<message-listener message="needAdminMain" function="getAdminMain" />	
+
 				<message-listener message="needAdminUsers" function="getAdminUsers" />	
 				<message-listener message="needEditUser" function="getEditUser" />	
 				<message-listener message="needEditUserAction" function="getEditUserAction" />	

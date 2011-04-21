@@ -90,7 +90,7 @@
 				</cfloop>
 
 			</table>
-			
+			<a href="#myself#users.list&s=1">More Users</a>
 			<div class="pad-bottom-10">
 				<h3>Newest Groups</h3>
 			</div>
@@ -120,6 +120,7 @@
 					</cfif>
 				</cfloop>
 			</table>
+			<a href="#myself#groups.list&s=1">More Groups</a>
         </cfoutput>
 		
 	</div>

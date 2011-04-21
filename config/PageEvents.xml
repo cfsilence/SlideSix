@@ -39,6 +39,17 @@
 			</views>
 		</event-handler>
 		
+		<event-handler name="slideshows.search" type="templatedPage">
+			<broadcasts>
+				<message name="needSlideshowSearch" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/slideshowSearch.cfm" />
+			</views>
+		</event-handler>
+		
 		<event-handler name="slideshows.list" type="templatedPage">
 			<broadcasts>
 				<message name="needSlideshowList" />				
@@ -72,6 +83,17 @@
 			</views>
 		</event-handler>
 		
+		<event-handler name="users.list" type="templatedPage">
+			<broadcasts>
+				<message name="needUsersList" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/listUsers.cfm" />
+			</views>
+		</event-handler>
+		
 		<event-handler name="group.view" type="templatedPage">
 			<broadcasts>
 				<message name="needGroupView" />				
@@ -80,6 +102,17 @@
 			</results>
 			<views>
 				<include name="body" template="pages/group.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="groups.list" type="templatedPage">
+			<broadcasts>
+				<message name="needGroupsList" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/listGroups.cfm" />
 			</views>
 		</event-handler>
 

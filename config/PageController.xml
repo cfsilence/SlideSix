@@ -8,8 +8,11 @@
 				<message-listener message="needPresenterUpdateXML" function="getPresenterUpdateXML" />	
 				<message-listener message="needSlideshowView" function="getSlideshowView" />	
 				<message-listener message="needSlideshowList" function="getSlideshowsList" />	
+				<message-listener message="needSlideshowSearch" function="getSlideshowsSearch" />	
 				<message-listener message="needUserView" function="getUserView" />	
-				<message-listener message="needGroupView" function="getGroupView" />	
+				<message-listener message="needUsersList" function="getUsersList" />	
+				<message-listener message="needGroupsView" function="getGroupsView" />	
+				<message-listener message="needGroupsList" function="getGroupsList" />	
 				<message-listener message="needPrivateSlideshowAccess" function="getPrivateSlideshowAccess" />	
 			</controller>
 	</controllers>
