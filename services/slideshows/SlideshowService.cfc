@@ -7,6 +7,7 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 	property name="OOConvert" type="any" displayname="OOConvert";
 	property name="PDFConvert" type="any" displayname="PDFConvert";
 	property name="UserService" type="any" displayname="UserService";
+	property name="EventService" type="any" displayname="EventService";
 	property name="GroupService" type="any" displayname="GroupService";
 	property name="SearchService" type="any" displayname="SearchService";
 	property name="FileService" type="any" displayname="FileService";
@@ -83,7 +84,7 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 		var s = readSlideshow(arguments.slideshowID);
 		var attFile = expandPath(s.getPathToAttachment());
 		if(fileExists(attFile)){
-			fileDelete(attFile);
+			getFileService().delete(attFile);
 			return true;
 		}
 		return false;
@@ -104,7 +105,7 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 			}
 			return getFileFromPath(cleanFileName);
 		}
-		fileDelete(uploadedFile.directory & '/' & uploadedFile.name);
+		getFileService().delete(uploadedFile.directory & '/' & uploadedFile.name);
 		return '';
 	}
 	
@@ -233,18 +234,37 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 		return newID;
 	}
 	
-	public String function saveSlideshowInfo(id, data, createdByID, groupID){
+	public String function saveSlideshowInfo(id, data, createdByID, groupID, eventIDs=''){
 		var sID = isNull(arguments.id) ? 0 : arguments.id;
 		var s = readSlideshow(sID);		
 		s.populate(data);
 		
 		if(structKeyExists(arguments, 'createdByID') && len(trim(arguments.createdByID)))  s.setCreatedBy(getUserService().readUser(arguments.createdByID));
 		if(structKeyExists(arguments, 'groupID') && len(trim(arguments.groupID))){
-			//removed  && getGroupService().isGroupMember(arguments.groupID)
 			s.setGroup(getGroupService().readGroup(arguments.groupID));
 		}
 		else{
 			s.setGroup(javacast('null', ''));
+		}
+		
+		var eRelationship = s.getEventSlideshowRelationships();
+		if(!isNull(eRelationship) && arrayLen(eRelationship)){
+			s.setEventSlideshowRelationships([]);
+			for(var er in eRelationship){
+				er.setSlideshow(javacast('null', ''));
+				er.setEvent(javacast('null', ''));
+				getGenericDAO().deleteByID("EventSlideshowRelationship", er.getID());
+			}
+		} 
+		var rArr = listToArray(arguments.eventIDs);
+		for(var r in rArr){
+			var conf = getEventService().readEvent(r);
+			var rel = getGenericDAO().read('EventSlideshowRelationship', 0);
+			rel.setSlideshow(s);
+			rel.setEvent(conf);
+			getGenericDAO().save(rel);
+			s.addEventSlideshowRelationship(rel);
+			conf.addEventSlideshowRelationship(rel);
 		}
 
 		saveSlideshow(s);
@@ -359,10 +379,6 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 		//remove from search index 
 		var slideshow = readSlideshow(arguments.id);
 		var s = {};
-		
-		var tname = getUtils().getStrippedUUID() & '_delete_presentation_media';
-		
-		
 		s.action = 'delete';
 		s.key = slideshow.getID();
 		s.type = 'custom';
@@ -424,8 +440,19 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 			g.removeSlideshow(slideshow);
 			slideshow.setGroup(javacast('null', ''));
 		}
-		
+
+		while(slideshow.hasEventSlideshowRelationship()){
+			var esr = slideshow.getEventSlideshowRelationships()[1];
+			var eventID = esr.getEvent().getID();
 			
+			slideshow.removeEventSlideshowRelationship(esr);
+			esr.setSlideshow(javacast('null', ''));
+			esr.getEvent().removeEventSlideshowRelationship(esr);
+			getEventService().deleteEventRelationship(esr);
+		}
+		
+		var tname = getUtils().getStrippedUUID() & '_delete_presentation_media';
+		
 		thread name=tname fs=fs slideshow=slideshow storeRoot=getAppConfig().getConfigSetting('storageRootDir') {
 			attributes.fs.delete(attributes.storeRoot & slideshow.getSlideshowRootDir(), true);
 			for(var s in attributes.slideshow.getSlides()){
@@ -463,6 +490,27 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 		return getGenericDAO().list(argumentCollection=args); 
 	}
 	
+	public function querySlideshows(String hql, Any params, Struct options){
+		var args = {};
+		args.hql = arguments.hql;
+		if(structKeyExists(arguments, 'params')) args.params = arguments.params;
+		if(structKeyExists(arguments, 'options')){
+			 args.queryOptions = arguments.options;
+		}
+		var ss = getGenericDAO().query(argumentCollection=args); 
+		var retArr = [];
+		var cuID = getUserService().getCurrentUserID();
+		for(var s in ss){
+			if(len(s.getPassword()) && s.getCreatedBy().getID() == cuID){
+				arrayAppend(retArr,s);
+			}
+			else if(!len(s.getPassword())){
+				arrayAppend(retArr,s);
+			}
+		}
+		return retArr;
+	}
+
 	public function listSlideshows(String whereClause, Any params, Struct options){
 		var args = {};
 		args.entity = 'Slideshow';
@@ -528,6 +576,10 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 			slideshow.groupName = isNull(s.getGroup()) ? '' : s.getGroup().getName();
 			slideshow.groupID = isNull(s.getGroup()) ? '' : s.getGroup().getID();
 			slideshow.tagList = s.getTagList();
+			slideshow.eventIDList = s.getEventIDList();
+			slideshow.creditName = s.getCreditName();
+			slideshow.creditURL = s.getCreditURL();
+			slideshow.isFeatured = s.getIsFeatured();
 		}
 		return slideshow;
 	}
@@ -576,7 +628,10 @@ component accessors="true"  hint="i am the SlideShow Service" output="false"
 			ts.groupName = isNull(slideshow.getGroup()) ? '' : slideshow.getGroup().getName();
 			ts.groupID = isNull(slideshow.getGroup()) ? '' : slideshow.getGroup().getID();
 			ts.tagList = slideshow.getTagList();
-			
+			ts.eventIDList = slideshow.getEventIDList();
+			ts.creditName = slideshow.getCreditName();
+			ts.creditURL = slideshow.getCreditURL();
+
 			if(!isNull(ts.password) && (len(ts.password) && ts.createdBy == cuID)){
 				arrayAppend(ret, ts);
 			}

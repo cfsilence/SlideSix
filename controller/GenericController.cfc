@@ -1,5 +1,5 @@
 component  extends='ModelGlue.gesture.controller.Controller' hint='i am a model-glue controller' output='false'
-	beans='UserService'
+	beans='UserService, AppConfig'
 {
 	public function onApplicationStart(event){
 	}
@@ -14,6 +14,6 @@ component  extends='ModelGlue.gesture.controller.Controller' hint='i am a model-
 	}
 	
 	public function beforeRequest(event){
-		
+		arguments.event.setValue('AppConfig', beans.AppConfig);
 	}
 }

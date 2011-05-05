@@ -40,7 +40,7 @@
 				<th>Description</th>
 				<th>Private</th>
 				<th>Created By</th>
-				<th colspan="3">Action</th>
+				<th colspan="4">Action</th>
 			</tr>
 			<cfloop array="#slideshows#" index="s">
 				<tr>
@@ -49,6 +49,7 @@
 					<td>#yesNoFormat(len(trim(s.getPassword())))#</td>
 					<td><a href="#myself#user.view&id=#s.getCreatedBy().getID()#">#s.getCreatedBy().getFirstName()# #s.getCreatedBy().getLastName()#</a></td>
 					<td class="center"><a href="#myself#slideshow.view&slideshowid=#s.getID()#">View</a></td>
+					<td class="center"><a href="#myself#admin.feature&id=#s.getID()#&type=slideshow&isFeatured=#!s.getIsFeatured()#"><cfif s.getIsFeatured()>Remove </cfif>Feature</a></td>
 					<td class="center"><a href="#myself#admin.editSlideshow&id=#s.getID()#">Edit</a></td>
 					<td class="center"><a href="#myself#admin.deleteSlideshow&id=#s.getID()#">Delete</a></td>
 				</tr>

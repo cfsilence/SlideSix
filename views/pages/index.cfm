@@ -3,6 +3,7 @@
 <cfset countSlideshows = event.getValue("countSlideshows") />
 <cfset recentUsers = event.getValue("recentUsers") />
 <cfset recentGroups = event.getValue("recentGroups") />
+<cfset recentEvents = event.getValue("recentEvents") />
 <cfset myself = event.getValue("myself") />
 <cfset config = event.getValue("config") />
 <cfset storeRoot = config.getConfigSetting('storageRootDir') />
@@ -121,6 +122,37 @@
 				</cfloop>
 			</table>
 			<a href="#myself#groups.list&s=1">More Groups</a>
+			
+			<div class="pad-bottom-10">
+				<h3>Newest Events</h3>
+			</div>
+			
+        	<table id="recentEventContainer">
+				<cfset i = 0 />
+				<cfloop array="#recentEvents#" index="ev">
+					<cfset i++ />
+					<cfif (i+3) mod 4 eq 0>
+						<tr>
+					</cfif>
+
+					<cfset img = "/images/no_user_image_50.jpg" />
+
+					<cfif fileExists(storeRoot & ev.getPathToImageThumb())>
+						<cfset img = storeBase & ev.getPathToImageThumb() />
+					</cfif>
+
+					<td class="pad-left-5 pad-right-5 center align-top">
+						<cfset evLink = myself & "event.view&eventid=" & ev.getID() />
+						<a href="#evLink#">
+							<img src="#img#" alt="#ev.getName()#" title="#ev.getName()#" />
+						</a>
+					</td>
+					<cfif i mod 4 eq 0>
+						</tr>
+					</cfif>
+				</cfloop>
+			</table>
+			<a href="#myself#events.list&s=1">More Events</a>
         </cfoutput>
 		
 	</div>

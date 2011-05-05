@@ -18,7 +18,7 @@
 		<event-type name="templatedPage">
 			<after>
 				<broadcasts>
-						<message name="needBeforeRequest" /> 
+					<message name="needBeforeRequest" /> 
 				</broadcasts>
 				<views>
 					<include name="main" template="templates/main.cfm" />

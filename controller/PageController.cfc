@@ -1,5 +1,5 @@
 component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-glue controller" output="false"
-	beans="UserService,AppConfig,SearchService,SlideshowService,Utils,GroupService"
+	beans="UserService,AppConfig,SearchService,SlideshowService,Utils,GroupService,EventService,SlideSixImportService"
 {
 	public function onApplicationStart(event){
 	}
@@ -25,6 +25,7 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 		arguments.event.setValue('countSlideshows', beans.Slideshowservice.countSlideshows(whereClause));
 		arguments.event.setValue('recentUsers', beans.UserService.listUsers('1=1 ORDER BY createdOn desc', [], {maxresults=20, offset=1}));
 		arguments.event.setValue('recentGroups', beans.GroupService.listGroups('1=1 ORDER BY createdOn desc', [], {maxresults=20, offset=1}));
+		arguments.event.setValue('recentEvents', beans.EventService.listEvents('1=1 ORDER BY createdOn desc', [], {maxresults=20, offset=1}));
 		arguments.event.setValue('config', beans.AppConfig);
 	}
 	
@@ -140,6 +141,33 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 		arguments.event.setValue('config', beans.AppConfig);
 	}
 	
+	public function getEventsList(Any event){
+		var whereClause = '1=1 ORDER BY createdOn desc';
+		var count = beans.EventService.countEvents(whereClause);
+		var max = 10;
+		
+		var start = beans.Utils.cleanVarForPaging(arguments.event.getValue('s',1));
+		
+		if(!count){
+			arguments.event.setValue('msg', 'No Events Found.');
+			arguments.event.forward('page.index', 'msg');
+		}
+		if(start > count){
+			arguments.event.setValue('s',1);
+			arguments.event.forward('events.list','s');
+		}
+
+		var events = beans.EventService.listEvents(whereClause, [], {maxresults=max, offset=start});
+		
+		arguments.event.setValue('hasNext', count >= start + arrayLen(events));
+		arguments.event.setValue('nextStart', start + arrayLen(events));
+		arguments.event.setValue('hasPrev', start > 1);
+		arguments.event.setValue('prevStart', start - max < 0 ? 1 : start - max);
+		arguments.event.setValue('events', events);
+		arguments.event.setValue('countEvents', count);
+		arguments.event.setValue('config', beans.AppConfig);
+	}
+	
 	public function getSlideshowView(Any event){
 		var slideshowid = val(trim(arguments.event.getValue('slideshowid')));
 		var slideshow = beans.SlideshowService.listAllSlideshows('lastBuildDate is not null and id = ? ORDER BY createdOn desc', [slideshowid]);
@@ -174,6 +202,84 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 		}
 	}
 	
+	public function getAuthSlideSix(Any event){
+		var u = arguments.event.getValue('username');
+		var p = arguments.event.getValue('password');
+		var res = beans.SlideSixImportService.authenticate(u,p); 
+		if(isArray(res) && arrayLen(res)){
+			arguments.event.setValue('authMsg', 'SlideSix authentication failed.  Please check username & password and try again');
+			arguments.event.addResult('invalidAuth');
+			abort;
+		}
+		else if(isStruct(res) && structKeyExists(res, 'remoteSessionToken')){
+			if(structKeyExists(res, 'remoteSessionToken')){
+				session.slidesixToken = res.remoteSessionToken;
+				session.slidesixUserID = res.userid;
+				arguments.event.addResult('authenticated');	
+			}
+			else{
+				arguments.event.setValue('authMsg', 'An error occurred.  Please try again.');
+				arguments.event.addResult('sessionTokenMissing');
+			}
+		}
+	}
+
+	public function getSlideSixSlideshows(Any event){
+		var validKey = checkSlideSixKey();
+
+		if(!validKey){
+			arguments.event.setValue('authMsg', 'Your import session may have expired.  Please re-authenticate.');
+			arguments.event.forward('page.slidesixauth', 'authMsg');
+		}
+
+		var slidesixSlideshows = beans.SlideSixImportService.getSlideshows(getSlideSixUserID(), getSlideSixKey()); 
+		var ids = '';
+		var cols = slidesixSlideshows.columns;
+		var idcol = arrayFindNoCase(cols, 'slideshowid');
+
+		for(var c in slidesixSlideshows.data){
+			ids = listAppend(ids, c[idcol]);
+		}
+		var cuID = beans.UserService.getCurrentUserID();
+		var whereClause = 'select s from Slideshow s join s.createdBy u where s.importedID IN (:idList) and u.id = :createdBy';
+		var params = {idList=listToArray(ids),createdBy=cuID};
+		var importedSlideshows = beans.SlideshowService.querySlideshows(whereClause, params);
+
+		arguments.event.setValue('config', beans.AppConfig);
+		arguments.event.setValue('slidesixSlideshows', slidesixSlideshows);
+		arguments.event.setValue('importedSlideshows', importedSlideshows);
+	}
+
+	public function getSlideSixImport (Any event){
+		var validKey = checkSlideSixKey();
+		if(!validKey){
+			arguments.event.setValue('authMsg', 'Your import session may have expired.  Please re-authenticate.');
+			arguments.event.forward('page.slidesixauth', 'authMsg');
+		}
+		var alias = arguments.event.getValue('alias');
+		var slideshow = beans.SlideSixImportService.getSlideshow(alias); 
+		var importedTitle = beans.SlideSixImportService.importSlideshow(slideshow);
+		arguments.event.setValue('importedTitle', importedTitle);
+	}
+	
+	public string function getSlideSixKey(){
+		if(checkSlideSixKey()){
+			return session.slidesixToken;
+		}
+		return '';
+	}
+	
+	public string function getSlideSixUserID(){
+		if(checkSlideSixKey()){
+			return session.slidesixUserID;
+		}
+		return '';
+	}
+	
+	public boolean function checkSlideSixKey(){
+		return structKeyExists(session, 'slidesixToken') && session.slidesixToken != '';
+	}
+
 	public function getUserView(Any event){
 		var id = val(trim(arguments.event.getValue('userid')));
 		var user = beans.UserService.listUsers('id = ?', [id], {});
@@ -196,6 +302,18 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 			group = group[1];
 		}
 		arguments.event.setValue('group', group);
+	}
+	
+	public function getEventView(Any event){
+		var id = val(trim(arguments.event.getValue('eventid')));
+		var ev = beans.EventService.listEvents('id = ?', [id], {});
+		if(arrayLen(ev) != 1){
+			arguments.event.forward('page.index');
+		}
+		else{
+			ev = ev[1];
+		}
+		arguments.event.setValue('ev', ev);
 	}
 
 	public function getPresenterUpdateXML(Any event){

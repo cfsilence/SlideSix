@@ -7,6 +7,9 @@ body {
 	width: 960px;
 	margin: 0 auto;	
 }
+.body-wrap{
+	min-height: 650px;
+}
 #header,#footer{
 	background-color: #171717;
 	color: #ffffff;

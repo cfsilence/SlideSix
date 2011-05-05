@@ -1,192 +1,40 @@
 ﻿component extends="model.Base" persistent="true" entityname="User" table="users" displayname="user" hint="i am a user" output="false" accessors="true"
 {
-	/**
-	*@notEmpty
-	*@display Username
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@notnull true
-	*@alphanum
-	*@isuniqueusername
-	*@min 4
-	*/
-	property name="username";
+	property name='username' ormtype='string' notempty='yes' display='Username' max='50' min='4' isuniqueusername='yes' notnull='true' alphanum='yes' length='50';
+	property name='firstName' ormtype='string' max='50' notnull='true' notempty='yes' length='50' display='First Name';
+	property name='lastName' max='50' ormtype='string' notnull='true' notempty='yes' length='50' display='Last Name';
+	property name='bio' max='3000' ormtype='string' length='3000';
+	property name='email' max='500' ormtype='string' notnull='true' email='yes' notempty='yes' length='500' display='Email Address';
+	property name='password' max='50' ormtype='string' notnull='true' notempty='yes' length='50' ismatch='{confirmPassword}' display='Password';
+	property name='confirmPassword' max='50' mustmatch='Password' ormtype='string' notempty='yes' persistent='false' length='50' display='Confirm Password';
+	property name='isSubscribed' notnull='true' ormtype='boolean' default='0';
+	property name='favorites' inverse='true' lazy='true' linktable='favorites' fieldtype='many-to-many' singularname='favorite' inversejoincolumn='userID' cascade='save-update' cfc='model.slideshows.Slideshow' fkcolumn='slideshowID';
+	property name='userImageUploadFile' persistent='false';
+	property name='verifyKey' sqltype='char(35)';
+	property name='pathToImage' max='3000' ormtype='string' length='3000';
+	property name='lastLoggedInOn' notnull='true' ormtype='timestamp';
+	property name='isArchived' notnull='true' ormtype='boolean' default='0';
+	property name='eventMemberships' inverse='true' lazy='true' fieldtype='one-to-many' singularname='eventMembership' inversejoincolumn='userID' cascade='save-update' cfc='model.events.EventMembership' fkcolumn='userID';
+	property name='isVerified' notnull='true' ormtype='boolean' default='0';
+	property name='confirmDedicatedRoomPassword' max='50' mustmatch='dedicatedRoomPassword' ormtype='string' persistent='false' length='50' display='Confirm Dedicated Room Password';
+	property name='dedicatedRoomPassword' max='50' ormtype='string' length='50' ismatch='{confirmDedicatedRoomPassword}' display='Dedicated Room Password';
+	property name='pathToImageThumb' max='3000' ormtype='string' length='3000';
+	property name='groupMemberships' inverse='true' lazy='true' fieldtype='one-to-many' singularname='groupMembership' inversejoincolumn='userID' cascade='save-update' cfc='model.groups.GroupMembership' fkcolumn='userID';
+	property name='isAdmin' notnull='true' ormtype='boolean' default='0';
+	property name='slideshows' fieldtype='one-to-many' singularname='slideshow' cascade='save-update' lazy='true' cfc='model.slideshows.Slideshow' fkcolumn='createdBy';
+	property name='isFeatured' notnull='true' ormtype='boolean' default='0' dbdefault='0';
 	
-	/**
-	*@display First Name
-	*@notEmpty
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@notnull true
-	*/
-	property name="firstName";
-	
-	/**
-	*@display Last Name
-	*@notEmpty
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@notnull true
-	*/
-	property name="lastName";
-	
-	/**
-	*@display Password
-	*@notEmpty
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@isMatch {confirmPassword}
-	*@notnull true
-	*/
-	property name="password";
-	
-	/**
-	*@display Confirm Password		
-	*@notEmpty
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@persistent false
-	*@mustmatch Password
-	*/
-	property name="confirmPassword";
-	
-	/**
-	*@display Email Address
-	*@notEmpty
-	*@max 500
-	*@ormtype string
-	*@length 500
-	*@email
-	*@notnull true
-	*/
-	property name="email";
-	
-	/**
-	*@default 0
-	*@ormtype boolean
-	*@notnull true
-	*/
-	property name="isAdmin";
-	
-	/**
-	*@default 0
-	*@ormtype boolean
-	*@notnull true
-	*/
-	property name="isArchived";
-	
-	/**
-	*@display Dedicated Room Password
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@isMatch {confirmDedicatedRoomPassword}
-	*/
-	property name="dedicatedRoomPassword";
-	
-	/**
-	*@display Confirm Dedicated Room Password		
-	*@max 50
-	*@ormtype string
-	*@length 50
-	*@persistent false
-	*@mustmatch dedicatedRoomPassword
-	*/
-	property name="confirmDedicatedRoomPassword";
-	
-	/**
-	*@max 3000
-	*@ormtype string
-	*@length 3000
-	*/
-	property name="bio";
-	
-	/**
-    *@persistent false
-    */
-	property name="userImageUploadFile";
-	
-	/**
-	*@max 3000
-	*@ormtype string
-	*@length 3000
-	*/
-	property name="pathToImage";
-	
-	
-	/**
-	*@max 3000
-	*@ormtype string
-	*@length 3000
-	*/
-	property name="pathToImageThumb";
-	
-	
-	/**
-	*@default 0
-	*@ormtype boolean
-	*@notnull true
-	*/
-	property name="isVerified";
-	/**
-	*@sqltype char(35)
-    */
-
-	property name="verifyKey";
-	
-	/**
-	*@default 0
-	*@ormtype boolean
-	*@notnull true
-	*/
-	property name="isSubscribed";
-	
-	/**
-	*@ormtype timestamp
-	*@notnull true
-    */
-	property name="lastLoggedInOn";
-
-	/**
-    *@fieldtype one-to-many
-	*@cfc model.groups.GroupMembership
-	*@fkcolumn userID
-	*@inverseJoinColumn userID
-	*@singularName groupMembership
-	*@lazy true
-	*@cascade save-update
-	*@inverse true
-    */
-	property name="groupMemberships";
-	
-	/**
-    *@fieldtype one-to-many
-	*@cfc model.slideshows.Slideshow
-	*@fkcolumn createdBy
-	*@singularName slideshow
-	*@lazy true
-	*@cascade save-update
-    */
-	property name="slideshows";
-	
-	/**
-    *@fieldtype many-to-many
-	*@cfc model.slideshows.Slideshow
-	*@linkTable favorites
-	*@fkcolumn slideshowID
-	*@inverseJoinColumn userID
-	*@singularName favorite
-	*@lazy true
-	*@cascade save-update
-	*@inverse true
-    */
-	property name="favorites";
-	
+	public function addEventMembership(eventMembership){
+		if(isNull(variables.eventMemberships)){
+			variables.eventMemberships = arrayNew(1);
+		}
+		
+		arrayAppend(variables.eventMemberships, arguments.eventMembership);
+		
+		if(!isNull(arguments.eventMembership) && !arguments.eventMembership.hasUser(this)){
+			arguments.eventMembership.setUser(this);
+		}
+	}
 	
 	public function addGroupMembership(groupMembership){
 		if(isNull(variables.groupMemberships)){

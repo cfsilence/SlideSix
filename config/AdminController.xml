@@ -2,6 +2,7 @@
 	<controllers>
 			<controller id="AdminController" type="controller.AdminController">
 				<message-listener message="needAdminMain" function="getAdminMain" />	
+				<message-listener message="needAdminFeature" function="getAdminFeature" />	
 
 				<message-listener message="needAdminUsers" function="getAdminUsers" />	
 				<message-listener message="needEditUser" function="getEditUser" />	
@@ -17,6 +18,11 @@
 				<message-listener message="needEditGroup" function="getEditGroup" />	
 				<message-listener message="needEditGroupAction" function="getEditGroupAction" />	
 				<message-listener message="needDeleteGroup" function="getDeleteGroup" />	
+				
+				<message-listener message="needAdminEvents" function="getAdminEvents" />
+				<message-listener message="needEditEvent" function="getEditEvent" />	
+				<message-listener message="needEditEventAction" function="getEditEventAction" />	
+				<message-listener message="needDeleteEvent" function="getDeleteEvent" />	
 			</controller>
 	</controllers>
 </modelglue>

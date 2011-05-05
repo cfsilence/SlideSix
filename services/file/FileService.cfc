@@ -75,7 +75,7 @@ component accessors='true' displayname='FileService' output='false'
 		
 	}
 	
-	public boolean function storeImage(fileField, storeRoot, storePath, thumbPath){
+	public boolean function storeImage(fileField, storeRoot, storePath, thumbPath, width=150, height=150, thumbWidth=50, thumbHeight=50){
 		var tmpRoot = getAppConfig().getConfigSetting('virtualTempRoot');
 		var storageType = getAppConfig().getConfigSetting('storageType');
 		
@@ -84,7 +84,7 @@ component accessors='true' displayname='FileService' output='false'
 		if(uploadedImg.fileWasSaved){
 			var serverImg = uploadedImg.ServerDirectory & '/' & uploadedImg.ServerFileName & '.' & uploadedImg.ServerFileExt;	
 			var tmpImage = imageNew(serverImg);
-			imageResize(tmpImage, 150, 150);
+			imageResize(tmpImage, arguments.width, arguments.height);
 			imageWrite(tmpImage, arguments.storeRoot & arguments.storePath, 1, true);
 			
 			//do we need to set ACL?
@@ -103,7 +103,7 @@ component accessors='true' displayname='FileService' output='false'
 				}
 			}		
 			
-			if(fileExists(serverImg)) fileDelete(serverImg);
+			if(fileExists(serverImg)) delete(serverImg);
 			
 			return true;
 		}

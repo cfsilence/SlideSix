@@ -6,6 +6,8 @@
 <cfset event.setValue('needJqueryUI', true) />
 <cfset invalidPassword = viewstate.getValue("invalidPassword", false) />
 
+<cfdump var="#slideshow#" expand="false">
+
 <cfoutput>
 <cfif not len(slideshow.getPassword()) or arrayFind(session.privateAccess, trim(slideshow.getID())) or slideshow.getCreatedBy().getID() eq currentUser.getID()>
 	<h2>#slideshow.getTitle()#</h2>
@@ -94,4 +96,3 @@
 
 </cfoutput>
 
-<cfdump var="#slideshow#" top=1 />

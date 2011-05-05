@@ -28,6 +28,51 @@
 			</views>
 		</event-handler>
 		
+		<event-handler name="page.slidesixauth" type="templatedPage,loggedIn">
+			<broadcasts>
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/slidesixImportAuth.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="page.handleslidesixauth" type="templatedPage,loggedIn">
+			<broadcasts>
+				<message name="needAuthSlideSix" />
+			</broadcasts>
+			<results>
+				<result name="authenticated" do="page.listslidesixslideshows" redirect="true" />
+				<result name="invalidAuth" do="page.slidesixauth" redirect="true"/>
+				<result name="sessionTokenMissing" do="page.slidesixauth" redirect="true"/>
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="page.listslidesixslideshows" type="templatedPage,loggedIn">
+			<broadcasts>
+				<message name="needSlideSixSlideshows" />
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/slidesixListSlideshows.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="page.importslidesixslideshow" type="templatedPage,loggedIn">
+			<broadcasts>
+				<message name="needSlideSixImport" />
+			</broadcasts>
+			<results>
+				<result do="page.listslidesixslideshows" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
 		<event-handler name="slideshow.view" type="templatedPage">
 			<broadcasts>
 				<message name="needSlideshowView" />				
@@ -113,6 +158,28 @@
 			</results>
 			<views>
 				<include name="body" template="pages/listGroups.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="event.view" type="templatedPage">
+			<broadcasts>
+				<message name="needEventView" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/event.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="events.list" type="templatedPage">
+			<broadcasts>
+				<message name="needEventsList" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/listEvents.cfm" />
 			</views>
 		</event-handler>
 

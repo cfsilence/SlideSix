@@ -20,6 +20,24 @@
 			
 	</cffunction>
 
+	<cffunction name="query" output="false">
+		<cfargument name="hql" type="string" required="false" />
+		<cfargument name="params" type="Any" required="false" hint="can be an array or a struct depending on if named params are used" />
+		<cfargument name="unique" type="boolean" required="false" default="false" />
+		<cfargument name="queryOptions" type="struct" required="false" default="#{}#" />
+		<cfset var ret = arrayNew(1) />
+		<cfif structKeyExists(arguments, "queryOptions") and structKeyExists(arguments.queryOptions, "offset")>
+			<!--- make the zero based index transparent --->
+			<cfset arguments.queryOptions.offset = (arguments.queryOptions.offset - 1) />
+		</cfif>
+		<cfif structKeyExists( arguments, "params" )>
+			<cfset ret = ormExecuteQuery( hql, params, unique, queryOptions ) />
+			<cfreturn ret />
+		<cfelse>
+			<cfreturn ormExecuteQuery( hql ) />
+		</cfif>
+	</cffunction>
+
 	<cffunction name="list" output="false">
 		<cfargument name="entity" type="string" required="false" />
 		<cfargument name="whereClause" type="string" required="false" hint="*just* the part after ""where"", e.g., ""attrib = ?"" " />
@@ -79,7 +97,6 @@
 	<cffunction name="delete" output="false">
 		<cfargument name="instance" type="any" required="yes" />
 		<cfargument name="noFlush" type="boolean" default="false" />
-		
 		<!---<cflog text="delete() for #getMetadata( instance ).name#::#instance.getId()#">--->
 		<cfset entityDelete( instance ) />
 

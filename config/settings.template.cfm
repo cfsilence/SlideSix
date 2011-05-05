@@ -248,5 +248,9 @@ coldspringDefaults.validAttachmentUploadExtensions = 'zip';
 coldspringDefaults.isSearchEnabled = true;
 coldspringDefaults.searchCollectionName = 'slidesix_solr_collection';
 
+/*
+* related to importing presentations from slidesix
+*/
+coldspringDefaults.slidesixAPIKey = '';
 </cfscript>
 

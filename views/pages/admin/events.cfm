@@ -1,18 +1,18 @@
-<cfset groups = event.getValue('groups') />
+<cfset events = event.getValue('events') />
 <cfset pagination = event.getValue('pagination') />
-<cfset totalGroups = event.getValue('totalGroups') />
+<cfset totalEvents = event.getValue('totalEvents') />
 <cfset myself = event.getValue('myself') />
 <cfset msg = event.getValue('msg') />
 
-<h4>Groups</h4>
+<h4>Events</h4>
 
 <cfoutput>
 	<cfif len(trim(msg))>
 		<div class="msg pad-top-10 pad-bottom-10">#msg#</div>
 	</cfif>
-	<form id="searchGroupsForm" name="searchGroupForm" method="get" action="#myself#">
-		<input type="hidden" name="event" id="event" value="admin.groups" />
-		<div id="groupSearchContainer" class="pad-top-10 pad-bottom-10">
+	<form id="searchEventsForm" name="searchEventForm" method="get" action="#myself#">
+		<input type="hidden" name="event" id="event" value="admin.events" />
+		<div id="eventSearchContainer" class="pad-top-10 pad-bottom-10">
 			<div class="float-left pad-right-5">
 				<label for="searchString">Search:</label>
 				<input type="text" id="searchString" name="searchString" value="#event.getValue('searchString')#" />
@@ -26,7 +26,7 @@
 			</div>
 			<div class="float-left pad-left-5 pad-right-5">
 				<input type="submit" name="submit" value="Go" />
-				<a href="#myself#admin.groups">(Clear Search)</a>
+				<a href="#myself#admin.events">(Clear Search)</a>
 			</div>
 			<div class="clear"></div>
 		</div>
@@ -41,14 +41,14 @@
 				<th colspan="4">Action</th>
 			</tr>
 			
-			<cfloop array="#groups#" index="g">
+			<cfloop array="#events#" index="e">
 				<tr>
-					<td title="#g.getName()#">#left(g.getName(), 50)#</td>
-					<td title="#g.getDescription()#">#left(g.getDescription(), 50)#</td>
-					<td class="center"><a href="#myself#group.view&groupid=#g.getID()#">View</a></td>
-					<td class="center"><a href="#myself#admin.feature&id=#g.getID()#&type=group&isFeatured=#!g.getIsFeatured()#"><cfif g.getIsFeatured()>Remove </cfif>Feature</a></td>
-					<td class="center"><a href="#myself#admin.editGroup&id=#g.getID()#">Edit</a></td>
-					<td class="center"><a href="#myself#admin.deleteGroup&id=#g.getID()#">Delete</a></td>
+					<td title="#e.getName()#">#left(e.getName(), 50)#</td>
+					<td title="#e.getDescriptionShort()#">#left(e.getDescriptionShort(), 50)#</td>
+					<td class="center"><a href="#myself#event.view&eventid=#e.getID()#">View</a></td>
+					<td class="center"><a href="#myself#admin.feature&id=#e.getID()#&type=event&isFeatured=#!e.getIsFeatured()#"><cfif e.getIsFeatured()>Remove </cfif>Feature</a></td>
+					<td class="center"><a href="#myself#admin.editEvent&id=#e.getID()#">Edit</a></td>
+					<td class="center"><a href="#myself#admin.deleteEvent&id=#e.getID()#">Delete</a></td>
 				</tr>
 			</cfloop>
 		</table>

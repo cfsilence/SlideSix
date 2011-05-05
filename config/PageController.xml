@@ -13,7 +13,13 @@
 				<message-listener message="needUsersList" function="getUsersList" />	
 				<message-listener message="needGroupView" function="getGroupView" />	
 				<message-listener message="needGroupsList" function="getGroupsList" />	
+				<message-listener message="needEventView" function="getEventView" />	
+				<message-listener message="needEventsList" function="getEventsList" />	
 				<message-listener message="needPrivateSlideshowAccess" function="getPrivateSlideshowAccess" />	
+				<!-- slidesix import -->
+				<message-listener message="needAuthSlideSix" function="getAuthSlideSix" />	
+				<message-listener message="needSlideSixSlideshows" function="getSlideSixSlideshows" />	
+				<message-listener message="needSlideSixImport" function="getSlideSixImport" />	
 			</controller>
 	</controllers>
 </modelglue>

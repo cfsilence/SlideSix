@@ -1,5 +1,5 @@
 component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-glue controller" output="false"
-	beans="UserService,AppConfig,SearchService,SlideshowService,GroupService,Hyrule"
+	beans="UserService,AppConfig,SearchService,SlideshowService,GroupService,Hyrule,EventService"
 {
 	public function onApplicationStart(event){
 	}
@@ -19,6 +19,47 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 
 	public function getAdminMain(Any event){
 			
+	}
+
+	public function getAdminFeature(Any event){
+		var type = arguments.event.getValue('type');
+		var id = arguments.event.getValue('id');
+		var isFeatured = arguments.event.getValue('isFeatured');
+		var msg = '';
+		var msgEnd = isFeatured ? ' has been featured.' : ' has been removed from being featured.';
+		var result = '';
+		switch(type){
+			case 'user': 
+				var user = beans.UserService.readUser(id);
+				msg = 'User ''' & user.getUsername() & '''';		
+				user.setIsFeatured(isFeatured);
+				beans.UserService.saveUser(user);
+				result = 'userFeatured';
+				break;
+			case 'group': 
+				var group = beans.GroupService.readGroup(id);
+				msg = 'Group ''' & group.getName() & '''';		
+				group.setIsFeatured(isFeatured);
+				beans.GroupService.saveGroup(group);
+				result = 'groupFeatured';
+				break;
+			case 'event': 
+				var ev = beans.EventService.readEvent(id);
+				msg = 'Event ''' & ev.getName() & '''';		
+				ev.setIsFeatured(isFeatured);
+				beans.EventService.saveEvent(ev);
+				result = 'eventFeatured';
+				break;
+			case 'slideshow': 
+				var slideshow = beans.SlideshowService.readSlideshow(id);
+				msg = 'Slideshow ''' & slideshow.getTitle() & '''';		
+				slideshow.setIsFeatured(isFeatured);
+				beans.SlideshowService.saveSlideshow(slideshow);
+				result = 'slideshowFeatured';
+				break;
+		}
+		arguments.event.setValue('msg', msg & msgEnd);
+		arguments.event.addResult(result);
 	}
 	
 	public function getAdminUsers(Any event){
@@ -247,6 +288,70 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 			beans.SlideshowService.saveSlideshow(s);
 		}
 		var deleted = beans.GroupService.deleteGroup(group);
+		
+		arguments.event.setValue("msg", msg);
+		arguments.event.addResult('deleted');
+	}
+	public function getAdminEvents(Any event){
+		var recs = 10;
+		var pagination = createObject('component', 'services.utils.Pagination').init();
+		
+		pagination.setItemsPerPage(recs);
+		pagination.setUrlPageIndicator("page");
+		pagination.setShowNumericLinks(true);
+		
+		var searchString = arguments.event.getValue('searchString');
+		var searchCol = arguments.event.getValue('searchCol'); 
+		var page = arguments.event.getValue('page',1);
+		var sRow = page >= 1 ? ((page - 1) * pagination.getItemsPerPage())+1 : 0;
+		
+		var whereClause = len(trim(searchString)) && len(trim(searchCol)) ? searchCol & ' like ?' : '1=1';
+		var orderBy = 'createdOn desc';
+		var params = len(trim(searchString)) && len(trim(searchCol)) ? ['%'&searchString&'%'] : [];
+
+		pagination.setBaseLink('index.cfm?event=admin.events&searchString=#searchString#&searchCol=#searchCol#');
+		 
+		var events = beans.EventService.listEvents(whereClause & ' order by ' & orderBy, params, {maxresults=recs, offset=sRow});
+		var totalEvents = beans.EventService.countEvents(whereClause & ' order by ' & orderBy, params);
+		
+		pagination.setRecordsToPaginate(totalEvents);
+		
+		arguments.event.setValue('pagination', pagination);
+		arguments.event.setValue('events', events);
+		arguments.event.setValue('totalEvents', totalEvents);
+	}
+	
+	public function getEditEvent(Any event){
+		var id = arguments.event.getValue('id');
+		var ev = beans.EventService.readEvent(id);
+		arguments.event.setValue("ev", ev);
+	}
+
+	public function getEditEventAction(Any event){
+		var id = arguments.event.getValue('id');
+		var ev = beans.EventService.readEvent(id);
+		var args = duplicate(arguments.event.getAllValues());
+		ev.populate(args);
+		ev.setAutoAcceptMembers(arguments.event.getValue('autoAcceptMembers', false));
+		
+		var result = beans.Hyrule.validate(ev);
+		arguments.event.setValue('errors', result);
+		
+		if(result.hasErrors()){
+			arguments.event.setValue('ev', ev);
+			arguments.event.addResult('failure');
+		}
+		else{
+			beans.SlideshowService.saveEventInfo(ev.getID(),args);
+			arguments.event.addResult('success');
+		}
+	}
+	
+	public function getDeleteEvent(Any event){
+		var id = arguments.event.getValue('id');
+		var ev = beans.EventService.readEvent(id);
+		var msg = 'Event "' & ev.getName() & '" has been deleted.';
+		var deleted = beans.EventService.deleteEvent(ev);
 		
 		arguments.event.setValue("msg", msg);
 		arguments.event.addResult('deleted');

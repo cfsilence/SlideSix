@@ -72,6 +72,22 @@
 	</property>
 </bean>
 
+<bean id="SlideSixImportConfig" class="ModelGlue.Bean.CommonBeans.SimpleConfig">
+	<property name="config">
+		<map>
+			<entry key="slidesixAPIKey">
+	            <value>${slidesixAPIKey}</value>
+	        </entry>
+			<entry key="slidesixAPIURL">
+	            <value>${slidesixAPIURL}</value>
+	        </entry>
+			<entry key="slidesixXMLURL">
+	            <value>${slidesixXMLURL}</value>
+	        </entry>
+		</map>
+	</property>
+</bean>
+
 <bean id="AppConfig" class="ModelGlue.Bean.CommonBeans.SimpleConfig">
 	<property name="config">
 		<map>
@@ -225,6 +241,51 @@
 
 <bean id="Utils" class="services.utils.Utils" />
 
+<bean id="SlideSixImportService" class="services.import.SlideSixImportService">
+	<property name="SlideSixImportConfig">
+		<ref bean="SlideSixImportConfig"></ref>
+	</property>
+	<property name="SlideshowService">
+		<ref bean="SlideshowService"></ref>
+	</property>
+	<property name="UserService">
+		<ref bean="UserService"></ref>
+	</property>
+	<property name="FileService">
+		<ref bean="FileService" />
+	</property>
+	<property name="AppConfig">
+		<ref bean="AppConfig" />
+	</property>
+	<property name="Utils">
+		<ref bean="Utils" />
+	</property>
+</bean>
+
+<bean id="EventService" class="services.events.EventService">
+	<property name="GenericDAO">
+		<ref bean="GenericDAO" />
+	</property>
+	<property name="Utils">
+		<ref bean="Utils" />
+	</property>
+	<property name="UserService">
+		<ref bean="UserService" />
+	</property>
+	<property name="SlideshowService">
+		<ref bean="SlideshowService" />
+	</property>
+	<property name="EmailService">
+		<ref bean="EmailService" />
+	</property>
+	<property name="FileService">
+		<ref bean="FileService" />
+	</property>
+	<property name="AppConfig">
+		<ref bean="AppConfig" />
+	</property>
+</bean>	
+
 <bean id="GroupService" class="services.groups.GroupService">
 	<property name="GenericDAO">
 		<ref bean="GenericDAO" />
@@ -288,6 +349,9 @@
 	</property>
 	<property name="UserService">
 		<ref bean="UserService" />
+	</property>
+	<property name="EventService">
+		<ref bean="EventService" />
 	</property>
 	<property name="GroupService">
 		<ref bean="GroupService" />

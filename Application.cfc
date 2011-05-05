@@ -9,7 +9,7 @@
 	this.ormsettings = {dbcreate='update', dialect='MySQL', logsql='true', eventhandling='true', eventHandler="model.ORMEventHandler", sqlscript='db.sql'}; // 
 	//mappings
 	this.mappings['/hyrule'] = expandPath('/services/hyrule'); 
-	this.mappings['/ModelGlue'] = expandPath('../frameworks/ModelGlue');
+	this.mappings['/ModelGlue'] = 'c:\inetpub\wwwroot\frameworks\ModelGlue\'; //expandPath('../frameworks/ModelGlue');
 	this.mappings['/ColdSpring'] = expandPath('../frameworks/coldspring'); 
 	this.mappings['/model'] = getDirectoryFromPath(getCurrentTemplatePath()) & 'model';
 	this.customTagPaths = expandPath('/customTags');

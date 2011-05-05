@@ -13,6 +13,7 @@
 <cfparam name="attributes.cacheKey" default="" />
 <cfparam name="attributes.scripts" default="" />
 <cfparam name="attributes.isLoggedIn" default="false" />
+<cfparam name="attributes.searchEnabled" default="true" />
 <cfparam name="attributes.currentUser" default="" />
 <cfparam name="variables.scriptPath" default="#attributes.pathToSiteRoot#/includes/js/scripts/">
 </cfsilent>
@@ -53,7 +54,7 @@
 <body>
 <div id="header" class="pad-top-20">
 	<div class="wrap">
-		<h1>SlideSix</h1>
+		<h1>Slide Ninja!</h1>
 	</div>
 	<hr />
 </div>
@@ -80,39 +81,34 @@
 				<div class="float-left pad-left-10 pad-right-10 pad-bottom-10">
 					<a href="index.cfm?event=slidemanager">slide manager</a>
 				</div>
+				<div class="float-left pad-left-10 pad-right-10 pad-bottom-10">
+					<a href="index.cfm?event=page.slidesixauth">slidesix import</a>
+				</div>
 				<cfif attributes.currentUser.getIsAdmin()>
 					<div class="float-left pad-left-10 pad-right-10 pad-bottom-10">
 						<a href="index.cfm?event=admin.main">Admin</a>
 					</div>
-					<div class="float-left pad-left-10 pad-right-10 pad-bottom-10">
-						<a href="index.cfm?event=admin.slideshows">SlideShow Admin</a>
-					</div>
-					<div class="float-left pad-left-10 pad-right-10 pad-bottom-10">
-						<a href="index.cfm?event=admin.users">User Admin</a>
-					</div>
-					<div class="float-left pad-left-10 pad-right-10 pad-bottom-10">
-						<a href="index.cfm?event=admin.groups">Groups Admin</a>
-					</div>
 				</cfif>
 			</cfif>
-			
-			<div class="float-right pad-left-10 pad-right-10 pad-bottom-10">
-				<form action="index.cfm" method="get">
-					<div class="float-left">
-						<input type="text" id="q" name="q" value="" class="width-100-px" />										
-						<input type="hidden" id="event" name="event" value="slideshows.search" />
-					</div>
-					<div class="float-left">
-						<input type="submit" name="submit" value="Search" />
-					</div>
-					<div class="clear"></div>
-				</form>
-			</div>
+			<cfif attributes.searchEnabled>
+				<div class="float-right pad-left-10 pad-right-10 pad-bottom-10">
+					<form action="index.cfm" method="get">
+						<div class="float-left">
+							<input type="text" id="q" name="q" value="" class="width-100-px" />										
+							<input type="hidden" id="event" name="event" value="slideshows.search" />
+						</div>
+						<div class="float-left">
+							<input type="submit" name="submit" value="Search" />
+						</div>
+						<div class="clear"></div>
+					</form>
+				</div>
+			</cfif>
 			<div class="clear"></div>
 		</div>
 	</div>
 </div>
-<div class="wrap">
+<div class="wrap body-wrap">
 
 <cfelse>
 

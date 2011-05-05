@@ -12,6 +12,20 @@
 			</views>
 		</event-handler>
 		
+		<event-handler name="admin.feature" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needAdminFeature" />				
+			</broadcasts>
+			<results>
+				<result name="userFeatured" do="admin.users" redirect="true" />
+				<result name="groupFeatured" do="admin.groups" redirect="true" />
+				<result name="eventFeatured" do="admin.events" redirect="true" />
+				<result name="slideshowFeatured" do="admin.slideshows" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
 		<event-handler name="admin.users" type="templatedPage,loggedIn,admin">
 			<broadcasts>
 				<message name="needAdminUsers" />				
@@ -126,7 +140,7 @@
 			</views>
 		</event-handler>
 		
-		<event-handler name="admin.editgroupAction" type="templatedPage,loggedIn,admin">
+		<event-handler name="admin.editGroupAction" type="templatedPage,loggedIn,admin">
 			<broadcasts>
 				<message name="needEditGroupAction" />				
 			</broadcasts>
@@ -145,6 +159,52 @@
 			</broadcasts>
 			<results>
 				<result name="deleted" do="admin.groups" redirect="true" />
+			</results>
+			<views>
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.events" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needAdminEvents" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/events.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editEvent" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditEvent" />				
+			</broadcasts>
+			<results>
+			</results>
+			<views>
+				<include name="body" template="pages/admin/event.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.editEventAction" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needEditEventAction" />				
+			</broadcasts>
+			<results>
+				<result name="failure" do="admin.editEvent" />
+				<result name="success" do="admin.events" redirect="true" />
+			</results>
+			<views>
+				<include name="body" template="pages/admin/event.cfm" />
+			</views>
+		</event-handler>
+		
+		<event-handler name="admin.deleteEvent" type="templatedPage,loggedIn,admin">
+			<broadcasts>
+				<message name="needDeleteEvent" />				
+			</broadcasts>
+			<results>
+				<result name="deleted" do="admin.events" redirect="true" />
 			</results>
 			<views>
 			</views>

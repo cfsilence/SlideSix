@@ -206,6 +206,7 @@
 		tu.lastLoggedInOn = !isNull(user.getLastLoggedInOn()) ? user.getLastLoggedInOn() : '';
 		tu.createdOn = user.getCreatedOn();
 		tu.updatedOn = user.getUpdatedOn();
+		tu.isFeatured = user.getIsFeatured();
 		
 		return tu;
 	}
@@ -228,11 +229,11 @@
 		
 		var existingImg = storeRoot & user.getPathToImage();
 		if(fileExists(existingImg)){
-			fileDelete(existingImg);
+			getFileService().delete(existingImg);
 		}
 		var existingThumb = storeRoot & user.getPathToImageThumb();
 		if(fileExists(existingThumb)){
-			fileDelete(existingThumb);
+			getFileService().delete(existingThumb);
 		}
 		var d = structNew();
 		d.pathToImage = userImgPath;

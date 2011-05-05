@@ -147,6 +147,7 @@ component accessors='true' hint='i am the GroupService' output='false'
 			group.pathToImageThumb = !isNull(gm.getGroup().getPathToImageThumb()) ? gm.getGroup().getPathToImageThumb() : '';
 			group.autoAcceptMembers = gm.getGroup().getAutoAcceptMembers();
 			group.pendingMembers = javacast('int', val(gm.getGroup().getPendingMembers()));
+			group.isFeatured = gm.getGroup().getIsFeatured();
 			arrayAppend(groups, group);
 		}
 		return groups;
@@ -171,11 +172,11 @@ component accessors='true' hint='i am the GroupService' output='false'
 		
 		var existingImg = storeRoot & group.getPathToImage();
 		if(fileExists(existingImg)){
-			fileDelete(existingImg);
+			getFileService().delete(existingImg);
 		}
 		var existingThumb = storeRoot & group.getPathToImageThumb();
 		if(fileExists(existingThumb)){
-			fileDelete(existingThumb);
+			getFileService().delete(existingThumb);
 		}
 		var d = structNew();
 		d.pathToImage = groupImgPath;
