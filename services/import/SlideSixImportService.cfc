@@ -48,10 +48,10 @@ component displayname='SlideSixImport' accessors='true'{
 
 	public any function importSlideshow(x){
 		var data = {};
-		data.title = x.presentation.title.xmlText;
-		data.abstract = x.presentation.description.xmlText;
+		data.title = arguments.x.presentation.title.xmlText;
+		data.abstract = arguments.x.presentation.description.xmlText;
 		data.isConverting = 0;
-		data.importedID = toString(x.presentation.XmlAttributes.id);
+		data.importedID = toString(arguments.x.presentation.XmlAttributes.id);
 		
 		var cuID = getUserService().getCurrentUserID();
 		var ssid = getSlideshowService().saveSlideshowInfo(0, data, cuID);
@@ -64,14 +64,16 @@ component displayname='SlideSixImport' accessors='true'{
 		var fs = getFileService();
 		
 		var tname = getUtils().getStrippedUUID() & '_import_slidesix_slides';
-		thread name=tname x=x fs=fs ssid=ssid SlideshowService=getSlideshowService() thumbRoot=thumbRoot storeRoot=storeRoot slideRoot=slideRoot{
-			var ss = attributes.SlideshowService.readSlideshow(attributes.ssid);
-			var slides = attributes.x.presentation.slides;
-			for(var s=1; s <= arrayLen(slides); s++){
-				var slide = slides.slide[s];
-				var title = slide.title;
-				var slideImg = imageNew(slide.slideContentPath.xmlText);
-				var d = {};
+		thread name=tname presoSlides=x.presentation.slides fs=fs ssid=ssid SlideshowService=getSlideshowService() thumbRoot=thumbRoot storeRoot=storeRoot slideRoot=slideRoot{
+			ss = attributes.SlideshowService.readSlideshow(attributes.ssid);
+			slides = attributes.presoSlides;
+			writeLog(log='foo',text='#slides#');
+			writeLog(log='foo',text='#arrayLen(slides.slide)#');
+			for(s=1; s <= arrayLen(slides.slide); s++){
+				slide = slides.slide[s];
+				title = slide.title;
+				slideImg = imageNew(slide.slideContentPath.xmlText);
+				d = {};
 				d.title = slide.title.xmlText;
 				d.text = slide.text.xmlText;
 				d.notes = slide.notes.xmlText;
