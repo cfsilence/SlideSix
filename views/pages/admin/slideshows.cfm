@@ -44,10 +44,10 @@
 			</tr>
 			<cfloop array="#slideshows#" index="s">
 				<tr>
-					<td title="#s.getTitle()#">#left(s.getTitle(), 30)#</td>
-					<td title="#s.getAbstract()#">#left(s.getAbstract(), 30)#</td>
-					<td>#yesNoFormat(len(trim(s.getPassword())))#</td>
-					<td><a href="#myself#user.view&id=#s.getCreatedBy().getID()#">#s.getCreatedBy().getFirstName()# #s.getCreatedBy().getLastName()#</a></td>
+					<td title="#s.getTitle()#" class="width-150-px">#left(s.getTitle(), 30)#</td>
+					<td title="#s.getAbstract()#" class="width-300-px">#left(s.getAbstract(), 80)#</td>
+					<td class="width-50-px">#yesNoFormat(len(trim(s.getPassword())))#</td>
+					<td class="width-150-px"><a href="#myself#user.view&id=#s.getCreatedBy().getID()#">#s.getCreatedBy().getFirstName()# #s.getCreatedBy().getLastName()#</a></td>
 					<td class="center"><a href="#myself#slideshow.view&slideshowid=#s.getID()#">View</a></td>
 					<td class="center"><a href="#myself#admin.feature&id=#s.getID()#&type=slideshow&isFeatured=#!s.getIsFeatured()#"><cfif s.getIsFeatured()>Remove </cfif>Feature</a></td>
 					<td class="center"><a href="#myself#admin.editSlideshow&id=#s.getID()#">Edit</a></td>

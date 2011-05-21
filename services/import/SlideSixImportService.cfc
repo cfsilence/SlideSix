@@ -67,8 +67,6 @@ component displayname='SlideSixImport' accessors='true'{
 		thread name=tname presoSlides=x.presentation.slides fs=fs ssid=ssid SlideshowService=getSlideshowService() thumbRoot=thumbRoot storeRoot=storeRoot slideRoot=slideRoot{
 			ss = attributes.SlideshowService.readSlideshow(attributes.ssid);
 			slides = attributes.presoSlides;
-			writeLog(log='foo',text='#slides#');
-			writeLog(log='foo',text='#arrayLen(slides.slide)#');
 			for(s=1; s <= arrayLen(slides.slide); s++){
 				slide = slides.slide[s];
 				title = slide.title;

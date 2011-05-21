@@ -43,8 +43,8 @@
 			
 			<cfloop array="#events#" index="e">
 				<tr>
-					<td title="#e.getName()#">#left(e.getName(), 50)#</td>
-					<td title="#e.getDescriptionShort()#">#left(e.getDescriptionShort(), 50)#</td>
+					<td title="#e.getName()#" class="width-200-px">#left(e.getName(), 50)#</td>
+					<td title="#e.getDescriptionShort()#" class="width-450-px">#left(e.getDescriptionShort(), 50)#</td>
 					<td class="center"><a href="#myself#event.view&eventid=#e.getID()#">View</a></td>
 					<td class="center"><a href="#myself#admin.feature&id=#e.getID()#&type=event&isFeatured=#!e.getIsFeatured()#"><cfif e.getIsFeatured()>Remove </cfif>Feature</a></td>
 					<td class="center"><a href="#myself#admin.editEvent&id=#e.getID()#">Edit</a></td>

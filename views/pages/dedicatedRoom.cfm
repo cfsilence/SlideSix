@@ -31,7 +31,7 @@ var params = {
 var attributes = {
   id: "DedicatedRoom"
 };
-swfobject.embedSWF("/includes/flex/Collaboration/Collaboration.swf?room=#room#", "DedicatedRoom", "100%", "100%", "9.0.0", "/includes/flash/expressInstall.swf", flashvars, params, attributes);
+swfobject.embedSWF("/includes/flex/DedicatedRoom/DedicatedRoom.swf?room=#room#", "DedicatedRoom", "100%", "100%", "9.0.0", "/includes/flash/expressInstall.swf", flashvars, params, attributes);
 </script>
 
 <div class="center" id="DedicatedRoom">

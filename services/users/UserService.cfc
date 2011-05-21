@@ -191,6 +191,7 @@
 		tu.id = !isNull(user.getID()) ? user.getID() : 0;
 		tu.firstName = user.getFirstName();
 		tu.lastName = user.getLastName();
+		tu.disqusShortName = user.getDisqusShortName();
 		tu.username = user.getUsername();
 		tu.password = user.getPassword();
 		tu.email = user.getEmail();

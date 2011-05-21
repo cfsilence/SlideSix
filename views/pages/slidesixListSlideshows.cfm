@@ -55,7 +55,7 @@
             	<cfloop array="#importedSlideshows#" index="slideshow">
 					<cfset idx++ />
 					<cfif (idx+1) mod 2 eq 0><tr></cfif>
-						<td class="width-160-px">
+						<td class="width-160-px align-top">
 							<cfset pLink = myself & "slideshow.view&slideshowid=" & slideshow.getID() />
 							<a href="#pLink#">
 								<img src="#storeBase##slideshow.getPathToThumb()#" alt="#slideshow.getTitle()#" title="#slideshow.getTitle()#" />

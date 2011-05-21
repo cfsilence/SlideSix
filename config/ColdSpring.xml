@@ -179,6 +179,9 @@
 	        <entry key="slideshowImportErrorsLogName">
 	            <value>${slideshowImportErrorsLogName}</value>
 	        </entry>
+	        <entry key="disqusShortName">
+	            <value>${disqusShortName}</value>
+	        </entry>
 		</map>
 	</property>
 </bean>

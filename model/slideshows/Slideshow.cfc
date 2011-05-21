@@ -40,7 +40,7 @@
 	property name='isFeatured' notnull='true' ormtype='boolean' default='0' dbdefault='0';
 	
 	savecontent variable='variables.oCode'{
-		writeOutput("<object height='{height}' width='{width}'>
+		writeOutput("<object height='{height}' width='{width}' id='PresentationViewer'>
 		    <param name='movie' value='http://{server}/viewer/SlideSixViewer.swf?slideshowID={slideshowID}'/>
 		    <param name='menu' value='false'/>
 		    <param name='scale' value='noScale'/>
@@ -48,7 +48,7 @@
 		    <param name='allowScriptAccess' value='always'/>
 		    <param value='transparent' name='wmode'/>
 		    <param value='quality' name='best'/>
-		    <embed src='http://{server}/viewer/SlideSixViewer.swf?slideshowID={slideshowID}' allowscriptaccess='always' allowfullscreen='true' height='{height}' width='{width}' type='application/x-shockwave-flash' wmode='transparent' quality='best'/>
+		    <embed src='http://{server}/viewer/SlideSixViewer.swf?slideshowID={slideshowID}' name='PresentationViewer' allowscriptaccess='always' allowfullscreen='true' height='{height}' width='{width}' type='application/x-shockwave-flash' wmode='transparent' quality='best'/>
 		</object>");
 	}
 	

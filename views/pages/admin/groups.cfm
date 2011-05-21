@@ -43,8 +43,8 @@
 			
 			<cfloop array="#groups#" index="g">
 				<tr>
-					<td title="#g.getName()#">#left(g.getName(), 50)#</td>
-					<td title="#g.getDescription()#">#left(g.getDescription(), 50)#</td>
+					<td title="#g.getName()#" class="width-200-px">#left(g.getName(), 50)#</td>
+					<td title="#g.getDescription()#" class="width-450-px">#left(g.getDescription(), 50)#</td>
 					<td class="center"><a href="#myself#group.view&groupid=#g.getID()#">View</a></td>
 					<td class="center"><a href="#myself#admin.feature&id=#g.getID()#&type=group&isFeatured=#!g.getIsFeatured()#"><cfif g.getIsFeatured()>Remove </cfif>Feature</a></td>
 					<td class="center"><a href="#myself#admin.editGroup&id=#g.getID()#">Edit</a></td>

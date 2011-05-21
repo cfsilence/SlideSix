@@ -44,9 +44,9 @@
 			</tr>
 			<cfloop array="#users#" index="u">
 				<tr>
-					<td title="#u.getUsername()#">#left(u.getUsername(), 30)#</td>
-					<td>#u.getFirstName()# #u.getLastName()#</td>
-					<td title="#u.getBio()#">#left(u.getBio(), 30)#</td>
+					<td title="#u.getUsername()#" class="width-150-px">#left(u.getUsername(), 30)#</td>
+					<td class="width-150-px">#u.getFirstName()# #u.getLastName()#</td>
+					<td title="#u.getBio()#" class="width-350-px">#left(u.getBio(), 30)#</td>
 					<td class="center"><a href="#myself#user.view&userid=#u.getID()#">View</a></td>
 					<td class="center"><a href="#myself#admin.feature&id=#u.getID()#&type=user&isFeatured=#!u.getIsFeatured()#"><cfif u.getIsFeatured()>Remove </cfif>Feature</a></td>
 					<td class="center"><a href="#myself#admin.editUser&id=#u.getID()#">Edit</a></td>

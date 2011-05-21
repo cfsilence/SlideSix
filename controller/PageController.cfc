@@ -325,6 +325,16 @@ component  extends="ModelGlue.gesture.controller.Controller" hint="i am a model-
 	}
 
 	public function getDedicatedRoom(Any event){
+		var room = arguments.event.getValue('room');
+		var user = beans.UserService.listUsers('username = ?', [room]);
+		var roomExists = arrayLen(user);
+		if(!roomExists){
+			arguments.event.setValue('msg', 'We could not find a dedicated room named "#room#".');
+			arguments.event.forward('page.index', 'msg');
+		}
+		if(!len(trim(room))){
+			arguments.event.forward('page.index');
+		}
 	}
 	
 }

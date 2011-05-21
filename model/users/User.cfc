@@ -3,6 +3,7 @@
 	property name='username' ormtype='string' notempty='yes' display='Username' max='50' min='4' isuniqueusername='yes' notnull='true' alphanum='yes' length='50';
 	property name='firstName' ormtype='string' max='50' notnull='true' notempty='yes' length='50' display='First Name';
 	property name='lastName' max='50' ormtype='string' notnull='true' notempty='yes' length='50' display='Last Name';
+	property name='disqusShortName' max='500' ormtype='string' length='500' display='Disqus Short Name';
 	property name='bio' max='3000' ormtype='string' length='3000';
 	property name='email' max='500' ormtype='string' notnull='true' email='yes' notempty='yes' length='500' display='Email Address';
 	property name='password' max='50' ormtype='string' notnull='true' notempty='yes' length='50' ismatch='{confirmPassword}' display='Password';

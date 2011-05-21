@@ -1,8 +1,29 @@
 <cfcomponent output="false" accessors="true">
 	<cfsetting showdebugoutput="false" />
-	<cfset variables.userService = application.factory.getBean("userService") />	
+	<cfset variables.UserService = application.factory.getBean("UserService") />	
 	<cfset variables.AppConfig = application.factory.getBean("AppConfig") />
 
+	<cffunction name="checkAccess" output="false" access="remote" returntype="boolean">
+		<cfargument name="room" required="true" />
+		<cfargument name="password" required="true" />
+		<cfset var user = variables.UserService.readUserByUsername(room) />
+		<cfset var match = false />
+		<cfif user.getID() neq 0>
+			<cfset match = arguments.password eq user.getDedicatedRoomPassword() ? true : false />
+		</cfif>
+		<cfreturn match />
+	</cffunction>
+	
+	<cffunction name="checkPrivate" output="false" access="remote" returntype="boolean">
+		<cfargument name="room" required="true" />
+		<cfset var user = variables.UserService.readUserByUsername(room) />
+		<cfset var pvt = false />
+		<cfif user.getID() neq 0>
+			<cfset pvt = !isNull(user.getDedicatedRoomPassword()) && len(trim(user.getDedicatedRoomPassword())) ? true : false />
+		</cfif>
+		<cfreturn pvt />
+	</cffunction>
+	
 	<cffunction name="getIsUserNameAvailable" output="false" access="remote" returntype="boolean">
 		<cfargument name="room" required="true" />
 		<cfargument name="username" required="true" />
@@ -23,7 +44,7 @@
 				</cfif>
 			</cfif>
 			<!--- catch users who try to sign in as the room owner but aren't logged in as the room owner --->
-			<cfset var user = variables.userService.readUser(variables.userService.getCurrentUserID()) />
+			<cfset var user = variables.UserService.readUser(variables.UserService.getCurrentUserID()) />
 			<cfif arguments.room eq arguments.username and arguments.username neq user.getUsername()>
 				<cfset isUsernameAvailable = false />
 			</cfif>
